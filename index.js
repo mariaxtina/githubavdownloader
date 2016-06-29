@@ -4,6 +4,7 @@ var env = require('dotenv').config({path: './secure-variables.env'});
 
 var downloadImageByURL = require('./download-image-by-URL.js');
 var getRepoContributors = require('./get-repo-contributors.js');
+var recommendedRepos = require('./recommended-repos.js');
 
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
@@ -23,6 +24,12 @@ fs.mkdir(targetDirectory,function(err){
 
 getRepoContributors(repoOwner, repoName, function(contributors) {
   for (var contributor of contributors) {
-    downloadImageByURL(contributor.avatar_url, `./${targetDirectory}/${contributor.login}.jpg`);
+    //downloadImageByURL(contributor.avatar_url, `./${targetDirectory}/${contributor.login}.jpg`);
+  }
+});
+
+getRepoContributors(repoOwner, repoName, function(contributors) {
+  for (var contributor of contributors) {
+    recommendedRepos(contributor.starred_url.full_name, contributor.login);
   }
 });
